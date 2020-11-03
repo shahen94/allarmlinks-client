@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import reducer from './fixtures';
+import reducer from './features';
 
-const store = configureStore({ reducer });
+export const store = configureStore({ reducer });
 
-export default store;
+export type RootState = ReturnType<typeof store.getState>

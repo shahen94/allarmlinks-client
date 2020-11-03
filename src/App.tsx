@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Registration from './pages/Registration/Registration';
+import EmailValidation from './pages/EmailRegistration/EmailRegistration';
 import Home from './pages/Home/Home';
 
 function App() {
@@ -11,8 +11,11 @@ function App() {
           <Route exact path="/">
             <Home />
           </Route>
-          <Route path="/registration">
-            <Registration />
+          <Route path="/registration/email">
+            <EmailValidation />
+          </Route>
+          <Route path="/registration/phone">
+            <EmailValidation />
           </Route>
         </Switch>
       </Router>
