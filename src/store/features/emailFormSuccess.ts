@@ -4,9 +4,9 @@ const { reducer, actions } = createSlice({
   name: 'emailFormSuccess',
   initialState: false,
   reducers: {
-    changeStatus: (state: boolean, { payload }: PayloadAction<boolean>) => payload
+    changeEmailSuccess: (state: boolean, { payload }: PayloadAction<boolean>) => payload
   }
 })
 
 export default reducer;
-export const { changeStatus } = actions;
+export const { changeEmailSuccess } = actions;
