@@ -3,13 +3,14 @@ import EmailVerificationForm from '../../components/EmailVerficationForm/EmailVe
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import EmailNotification from '../../components/EmailNotification/EmailNotification';
+import styles from './EmailRegistration.module.scss';
 
 export default function EmailValidation() {
   const successStatus = useSelector(
     ({ emailFormSuccess }: RootState) => emailFormSuccess
   );
   return (
-    <div>
+    <div className={styles.formContainer}>
       {successStatus ? <EmailNotification /> : <EmailVerificationForm />}
     </div>
   );

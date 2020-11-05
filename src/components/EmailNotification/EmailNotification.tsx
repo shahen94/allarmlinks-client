@@ -2,37 +2,80 @@ import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import Link from '@material-ui/core/Link';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+  root: {
+    height: '80vh',
+
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    fontFamily: 'roboto',
+  },
+  container: {
+    width: 500,
+  },
+
+  header: {
+    textAlign: 'center',
+    marginBottom: '2rem',
+  },
+  question: {
+    marginTop: '1rem',
+    fontSize: '18px',
+  },
+  body: {
+    fontSize: '18px',
+  },
+  resend: {
+    fontSize: '16px',
+    padding: '10px 0',
+    textDecoration: 'underline',
+  },
+});
 
 const EmailNotification = () => {
   const [email, setEmail] = useState('anEmailThatWillBeReplaced@Later.com');
   const [resend, setResend] = useState(false);
+  const classes = useStyles();
+
   const handleResendButton = () => {
     setResend((state) => !state);
   };
 
   return (
-    <Box color="text.primary" margin={4}>
-      <Link target="_blank" href="https://mail.google.com">
-        <Typography variant="h6" component="h6">
-          Verify Your Email Address
+    <div className={classes.root}>
+      <Box className={classes.container} color="text.primary" margin={4}>
+        <Typography className={classes.header} variant="h4" component="h6">
+          Verify Email
         </Typography>
-      </Link>
-      <Typography color="textSecondary" component="p">
-        We have send an email to <strong>{email}</strong> to verify your
-        address. Please click the link in that email to continue.
-      </Typography>
-      {resend && (
-        <Typography color="secondary" component="p">
-          A new Email has been sent to your email. Please confirm it.
-        </Typography>
-      )}
 
-      <Typography color="textSecondary" component="p"></Typography>
-      <Button onClick={handleResendButton} color="primary" variant="outlined">
-        Resend email
-      </Button>
-    </Box>
+        <Typography className={classes.body} component="p">
+          We sent an email to {email}. To continue, please check your email and
+          verify your account
+        </Typography>
+        <Typography className={classes.question} component="p">
+          Didn't receive the Email?
+        </Typography>
+
+        {resend && (
+          <Typography color="secondary" component="p">
+            A new Email has been sent to your email. Please confirm it.
+          </Typography>
+        )}
+
+        <Typography color="textSecondary" component="p"></Typography>
+        <Button
+          className={classes.resend}
+          onClick={handleResendButton}
+          color="primary"
+        >
+          Resend email
+        </Button>
+      </Box>
+    </div>
   );
 };
 
