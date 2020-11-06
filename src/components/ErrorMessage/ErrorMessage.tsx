@@ -4,13 +4,11 @@ import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles({
   root: {
-    height: '40px',
-    paddingLeft: '10px',
+    height: '30px',
     display: 'flex',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
     fontSize: '1.2rem',
-    letterSpacing: '1px',
   },
 });
 

@@ -7,27 +7,30 @@ import { makeStyles } from '@material-ui/core';
 const useStyles = makeStyles({
   root: {
     height: '80vh',
-
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
     fontFamily: 'roboto',
+    boxSizing: 'border-box',
   },
   container: {
     width: 500,
+    background: '#F4F4F4',
+    padding: '2.5rem 4rem',
+    boxSizing: 'border-box',
   },
 
   header: {
     textAlign: 'center',
-    marginBottom: '2rem',
+    marginBottom: '2.5rem',
   },
   question: {
     marginTop: '1rem',
-    fontSize: '18px',
+    fontSize: '0.9rem',
   },
   body: {
-    fontSize: '18px',
+    fontSize: '0.8rem',
   },
   resend: {
     fontSize: '16px',
@@ -37,7 +40,7 @@ const useStyles = makeStyles({
 });
 
 const EmailNotification = () => {
-  const [email, setEmail] = useState('anEmailThatWillBeReplaced@Later.com');
+  const [email, setEmail] = useState('anemail@Later.com');
   const [resend, setResend] = useState(false);
   const classes = useStyles();
 
@@ -53,8 +56,10 @@ const EmailNotification = () => {
         </Typography>
 
         <Typography className={classes.body} component="p">
-          We sent an email to {email}. To continue, please check your email and
-          verify your account
+          We sent an email to {email}.
+        </Typography>
+        <Typography className={classes.body} component="p">
+          To continue, please check your email and verify your account
         </Typography>
         <Typography className={classes.question} component="p">
           Didn't receive the Email?
