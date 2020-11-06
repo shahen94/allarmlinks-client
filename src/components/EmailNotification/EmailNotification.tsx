@@ -19,6 +19,7 @@ const useStyles = makeStyles({
     background: '#F4F4F4',
     padding: '2.5rem 4rem',
     boxSizing: 'border-box',
+    borderRadius: 10,
   },
 
   header: {

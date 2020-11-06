@@ -32,6 +32,8 @@ const useStyles = makeStyles({
     alignItems: 'center',
     gap: '1rem',
     flexDirection: 'column',
+    width: 500,
+    borderRadius: 10,
   },
 
   textField: {
