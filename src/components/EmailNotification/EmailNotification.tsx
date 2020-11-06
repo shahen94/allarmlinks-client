@@ -34,7 +34,7 @@ const useStyles = makeStyles({
     fontSize: '0.8rem',
   },
   resend: {
-    fontSize: '16px',
+    fontSize: '14px',
     padding: '10px 0',
     textDecoration: 'underline',
   },

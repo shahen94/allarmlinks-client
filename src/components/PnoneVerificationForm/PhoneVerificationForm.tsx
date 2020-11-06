@@ -33,6 +33,7 @@ const useStyles = makeStyles({
     marginBottom: 30,
     fontWeight: 400,
     fontSize: '1.8rem',
+    height: 30,
   },
 
   header: {
@@ -40,25 +41,33 @@ const useStyles = makeStyles({
     fontWeight: 400,
     fontSize: '1.8rem',
   },
+  multiInputs: {
+    minHeight: '105px',
+  },
 });
 
 const PhoneVerificationForm = () => {
   const classes = useStyles();
-
+  const [sendStatus, setSendStatus] = useState(false);
   const handleOnChange = (value: string) => {
     console.log(value);
+  };
+
+  const handleFormSubmit: any = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    setSendStatus(true);
   };
 
   return (
     <div className={classes.wrapper}>
       <Typography className={classes.firstheader} variant="h5" component="h2">
-        Thank you for your Email Verification
+        {sendStatus ? '' : 'Thank you for your Email Verification'}
       </Typography>
       <div className={classes.container}>
         <Typography className={classes.header} variant="h5" component="h2">
           Enter your Phone Number
         </Typography>
-        <Form onSubmit={() => {}}>
+        <Form onSubmit={handleFormSubmit}>
           <PhoneInput
             country={'am'}
             disableSearchIcon
@@ -87,7 +96,9 @@ const PhoneVerificationForm = () => {
             }}
           />
 
-          <MultipleInput />
+          <div className={classes.multiInputs}>
+            {!sendStatus ? '' : <MultipleInput />}
+          </div>
 
           <SubmitButton>Send Code</SubmitButton>
         </Form>

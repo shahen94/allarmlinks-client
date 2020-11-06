@@ -10,7 +10,8 @@ const useStyles = makeStyles({
     marginTop: '0.5rem',
     alignSelf: 'center',
     fontSize: '1.1rem',
-    fontWeight: 400,
+    fontWeight: 300,
+    textTransform: 'capitalize',
   },
 });
 
