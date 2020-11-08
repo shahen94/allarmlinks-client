@@ -1,8 +1,8 @@
 import React from 'react';
-import { Redirect, useHistory } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
+import { useHistory } from 'react-router-dom';
 import SubmitButton from '../../components/FormElements/SubmitButton';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import styles from './Home.module.scss';
 
 function Home() {
   const history = useHistory();
@@ -11,37 +11,18 @@ function Home() {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '80vh',
-      }}
-    >
-      <div
-        style={{
-          width: '500px',
-          display: 'flex',
-          justifyContent: 'center',
-          flexDirection: 'column',
-        }}
-      >
+    <div className={styles.home}>
+      <div className={styles.home__message}>
         <img
-          style={{
-            width: '100%',
-          }}
+          className={styles.home__image}
           src="flag.png"
           alt="armenian flag"
         />
         <Typography
+          className={styles.home__text}
           color="textSecondary"
           variant="h5"
           component="h2"
-          style={{
-            textAlign: 'center',
-            padding: '2rem 0 4rem',
-          }}
         >
           Support Armenia and Artsakh
         </Typography>
