@@ -2,7 +2,9 @@ import React, { FC } from 'react';
 
 interface Props {
   children: JSX.Element[] | JSX.Element;
-  onSubmit: () => void;
+  onSubmit: (
+    event: React.FormEvent<HTMLFormElement>
+  ) => void | undefined | null;
   className?: string;
 }
 
@@ -15,7 +17,6 @@ const Form: FC<Props> = ({ children, onSubmit, className }) => {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        margin: 16,
         gap: 10,
       }}
     >
