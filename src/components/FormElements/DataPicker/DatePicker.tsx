@@ -1,11 +1,12 @@
-import 'date-fns';
 import React, { FC } from 'react';
+import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import { makeStyles, createMuiTheme } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Control, Controller } from 'react-hook-form';
 
 const useStyles = makeStyles({
   datePicker: {
@@ -16,54 +17,57 @@ const useStyles = makeStyles({
     background: 'white',
     padding: '0',
     '& .MuiFormLabel-root': {
-      transform: 'translate(1rem, 0.8rem) scale(1)',
+      transform: 'translate(0.3rem, 1.2rem) scale(1)',
       fontSize: 14,
-    },
-    '& .MuiInputBase-input': {
-      content: 'none',
     },
     '& .MuiInput-underline:before': {
       content: 'none',
     },
     '& .MuiInputLabel-shrink': {
-      transform: 'translate(1rem, 0) scale(0.75)',
+      transform: 'translate(0.3rem, 0) scale(0.75)',
     },
     '& .MuiInputAdornment-root': {
       transform: 'translate(0, -7px)',
     },
     '& .MuiInputBase-root': {
-      marginTop: '8px',
+      marginTop: '16px',
       padding: '0 10px 4px ',
-    },
-    '& .MuiInputLabel-root': {
-      transform: 'translate(1rem, 0.8rem) scale(1)',
-      fontSize: 14,
     },
   },
 });
 
-function DatePicker() {
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(null);
+interface IDatePickerProps {
+  control: Control<Record<string, any>>;
+  error: boolean;
+}
 
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
-  };
+const DatePicker: FC<IDatePickerProps> = ({ control, error }) => {
   const classes = useStyles();
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <KeyboardDatePicker
-        disableToolbar
-        format="dd/MM/yyyy"
-        label="Birth Date"
-        className={classes.datePicker}
-        value={selectedDate}
-        onChange={handleDateChange}
-        KeyboardButtonProps={{
-          'aria-label': 'change date',
-        }}
+      <Controller
+        name="birthDate"
+        control={control}
+        defaultValue={null}
+        rules={{ required: true }}
+        render={({ onChange, value }) => (
+          <KeyboardDatePicker
+            fullWidth
+            className={classes.datePicker}
+            name="birthDate"
+            label="*Birth Date"
+            format="dd.MM.yyyy"
+            value={value}
+            error={error}
+            onChange={onChange}
+            KeyboardButtonProps={{
+              'aria-label': 'birth date',
+            }}
+          />
+        )}
       />
     </MuiPickersUtilsProvider>
   );
-}
+};
 
 export default DatePicker;

@@ -1,15 +1,6 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import {
-  makeStyles,
-  InputAdornment,
-  Paper,
-  InputBase,
-  Button,
-  Grid,
-} from '@material-ui/core';
-
-import Facebook from '@material-ui/icons/Facebook';
+import { makeStyles, Grid } from '@material-ui/core';
 
 const useStyles = makeStyles({
   root: {
@@ -37,10 +28,11 @@ const useStyles = makeStyles({
     },
     '& .MuiInputBase-input': {
       margin: 0,
-      padding: 5,
+      padding: 8,
     },
     '& .MuiInputLabel-animated': {
       transform: 'translate(0, 15px) scale(1)',
+      fontSize: 12,
     },
     '& .MuiInputLabel-shrink': {
       transform: 'translate(0, 0) scale(0.75)',
@@ -51,15 +43,19 @@ const useStyles = makeStyles({
 interface Props {
   children: JSX.Element[] | JSX.Element;
   label: string;
+  inputRef: any | ((instance: any) => void) | null | undefined;
+  name: string;
 }
 
-const InputWithIcon = ({ children, label }: Props) => {
+const InputWithIcon = ({ children, label, inputRef, name }: Props) => {
   const classes = useStyles();
   return (
     <Grid className={classes.root} container spacing={1}>
-      <Grid item>{children}</Grid>
-      <Grid item>
-        <TextField label={label} />
+      <Grid xs={2} sm={2} lg={1} item>
+        {children}
+      </Grid>
+      <Grid xs={10} sm={10} lg={11} item>
+        <TextField fullWidth name={name} inputRef={inputRef} label={label} />
       </Grid>
     </Grid>
   );

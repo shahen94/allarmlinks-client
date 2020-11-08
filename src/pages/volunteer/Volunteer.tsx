@@ -1,192 +1,265 @@
-import React, { FC } from 'react';
+import { useHistory } from 'react-router-dom';
+import React, { FC, useEffect, useState, ChangeEvent } from 'react';
+import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/index';
 
-import Typography from '@material-ui/core/Typography';
-import {
-  makeStyles,
-  TextField,
-  Paper,
-  InputBase,
-  Button,
-} from '@material-ui/core';
-import DatePicker from '../../components/FormElements/DataPicker/DatePicker';
-import Facebook from '@material-ui/icons/Facebook';
-import LinkedIn from '@material-ui/icons/LinkedIn';
-import Twitter from '@material-ui/icons/Twitter';
+import './volunteer.scss';
+
 import InputWithIcon from '../../components/FormElements/InputWithIcon/InputWithIcon';
+import Typography from '@material-ui/core/Typography';
+import { Box } from '@material-ui/core';
+
 import SubmitButton from '../../components/FormElements/SubmitButton';
+import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
+import Skills from '../../components/FormElements/Skills/Skills';
+import CustomField from '../../components/FormElements/CustomFIeld/CustomField';
+import {
+  FacebookIcon,
+  LinkedInIcon,
+  TwitterIcon,
+} from '../../components/Icons/SocialIcons';
+import SelectInput from '../../components/FormElements/SelectInput/SelectInput';
+import AvailableHours from '../../components/FormElements/AvailableHours/AvailableHours';
+import DatePicker from '../../components/FormElements/DataPicker/DatePicker';
+import axios from 'axios';
 
-const useStyles = makeStyles({
-  wrapper: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    boxSizing: 'border-box',
-  },
+const REACT_APP_URL_REGISTER = process.env.REACT_APP_URL_REGISTER;
 
-  volunteer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-    background: '#F4F4F4',
-    padding: '1.2rem 6rem',
-  },
-
-  header: {
-    margin: '1rem',
-  },
-
-  paper: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 5,
-    boxShadow: '2px 2px 2px 1px #D6D6D6, -1px -1px 1px #E6E6E6',
-    background: 'white',
-    padding: '0',
-    '& .MuiInputBase-root::before': {
-      display: 'none',
-    },
-    '& .MuiInputLabel-root': {
-      transform: 'translate(1rem, 0.8rem) scale(1)',
-      fontSize: 14,
-    },
-    '& .MuiInputLabel-shrink': {
-      transform: 'translate(1rem, 0) scale(0.75)',
-    },
-    '& .MuiInputBase-root': {
-      marginTop: '8px',
-      padding: '0 10px 4px ',
-    },
-  },
-
-  form: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: '2rem',
-    flexDirection: 'column',
-    boxSizing: 'border-box',
-  },
-
-  formFields: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    gap: '6rem',
-  },
-
-  formColumn: {
-    display: 'flex',
-    gap: '1.2rem',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-  },
-  textField: {
-    borderRadius: 5,
-    boxShadow: '2px 2px 2px 1px #D6D6D6, -1px -1px 1px #E6E6E6',
-    background: 'white',
-    padding: '0',
-    '& .MuiInputBase-root::before': {
-      display: 'none',
-    },
-    '& .MuiInputLabel-root': {
-      transform: 'translate(1rem, 0.8rem) scale(1)',
-      fontSize: 14,
-    },
-    '& .MuiInputLabel-shrink': {
-      transform: 'translate(1rem, 0) scale(0.75)',
-    },
-    '& .MuiInputBase-root': {
-      marginTop: '8px',
-      padding: '0 10px 4px ',
-    },
-  },
-
-  facebookIcon: {
-    fill: '#3553A4',
-    background: 'white',
-  },
-  linkedInIcon: {
-    fill: '#0074B8',
-  },
-  twitterIcon: {
-    fill: '#00A1F9',
-  },
-});
-
-const fields = [
-  'Country',
-  'City',
-  'Address',
-  'Industry of Specialization',
-  'Current employer name',
-  'Ocupation',
-];
+type FromTo = {
+  from: string;
+  to: string;
+};
 
 const Volunteer: FC = () => {
-  const classes = useStyles();
+  /* STORE */
+  const token = useSelector((state: RootState) => state.token);
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(e.key);
+  /* router */
+  const history = useHistory();
+
+  /* local state */
+
+  const [newSkill, setNewSkill] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [selectedLangs, setSelectedLangs] = React.useState<string[]>([]);
+  const [fromTo, setFromTo] = useState<FromTo>({ from: '', to: '' });
+  const [listOfSkills, setListOFSkills] = useState([
+    'English',
+    'Turkish',
+    'Programming',
+  ]);
+
+  /* FORM */
+
+  const { register, handleSubmit, setValue, errors, control } = useForm();
+
+  /* SKILLS */
+
+  const handleSkillChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setNewSkill(e.target.value);
+  };
+  const handleKeyPress = (
+    e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (newSkill.trim() !== '') {
+        setListOFSkills((state) => [...state, newSkill]);
+        setNewSkill('');
+        setValue('skills', [...listOfSkills, newSkill]);
+      }
+    }
   };
 
-  const handleFormSubmit = (e: React.SyntheticEvent) => {
-    e.preventDefault();
+  const handleDeleteFromList = (skill: string) => () => {
+    setListOFSkills((state) => state.filter((el) => el !== skill));
   };
+
+  const handleAddSkills = () => {
+    if (newSkill.trim() !== '') {
+      setListOFSkills((state) => [...state, newSkill]);
+      setNewSkill('');
+      setValue('skills', [...listOfSkills, newSkill]);
+    }
+  };
+
+  /* LANGUAGES */
+
+  const handleSelectInputChange = (event: any) => {
+    setSelectedLangs(event.target.value as string[]);
+    setValue('languages', event.target.value);
+  };
+
+  /* AVAILABLE HOURS */
+  const handleFromChange = (
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setFromTo((state) => ({ ...state, from: e.target.value }));
+    setValue('hoursPerWeek', { ...{ ...fromTo, from: e.target.value } });
+  };
+
+  const handleToChange = (
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setFromTo((state) => ({ ...state, to: e.target.value }));
+
+    setValue('hoursPerWeek', { ...{ ...fromTo, to: e.target.value } });
+  };
+
+  /* SUBMIT */
+
+  const onSubmit = (data: any) => {
+    // console.log(data);
+    // console.log(JSON.stringify(data));
+
+    axios
+      .post(`${REACT_APP_URL_REGISTER}${token}`, data)
+      .then((res) => {
+        if (res.data.status === 'finished') {
+          history.push('/farewell');
+        } else {
+          if (res.data.error) {
+            throw new Error(res.data.error);
+          }
+        }
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+  };
+
+  useEffect(() => {
+    register({ name: 'skills' });
+    register({ name: 'hoursPerWeek' });
+  }, [register]);
 
   return (
-    <div className={classes.wrapper}>
-      <div className={classes.volunteer}>
-        <Typography className={classes.header} variant="h5" component="h2">
+    <div className={'wrapper'}>
+      <div className="volunteer">
+        <Typography style={{ margin: '1rem' }} variant="h5" component="h2">
           Additional Information
         </Typography>
 
-        <form onSubmit={handleFormSubmit} className={classes.form}>
-          <div className={classes.formFields}>
-            <div className={classes.formColumn}>
-              <DatePicker />
-              {fields.map((field) => (
-                <TextField label={field} className={classes.textField} />
-              ))}
+        <form onSubmit={handleSubmit(onSubmit)} className="form">
+          <div className="formFields">
+            <div className="formColumn">
+              <DatePicker
+                error={errors.birthDate ? true : false}
+                control={control}
+              />
+              <CustomField
+                name={'country'}
+                inputRef={register({ required: true })}
+                label={'*Country'}
+                error={errors.country ? true : false}
+              />
+              <CustomField
+                name={'city'}
+                inputRef={register({ required: true })}
+                label={'*City'}
+                error={errors.city ? true : false}
+              />
+              <CustomField
+                name={'address'}
+                inputRef={register()}
+                label={'Address'}
+              />
+              <CustomField
+                name={'specialization'}
+                inputRef={register()}
+                label={'Industry of Specialization'}
+              />
+              <CustomField
+                name={'currentEmployerName'}
+                inputRef={register()}
+                label={'Current employer name'}
+              />
+              <CustomField
+                name={'occupation'}
+                inputRef={register()}
+                label={'Occupation'}
+              />
+              <SelectInput
+                onChange={handleSelectInputChange}
+                selectedLangs={selectedLangs}
+                control={control}
+              />
             </div>
-            <div className={classes.formColumn}>
-              <TextField
-                className={classes.textField}
-                label="Available hours per week"
+            <div className="formColumn">
+              <AvailableHours
+                handleFromChange={handleFromChange}
+                handleToChange={handleToChange}
+                valueForFrom={fromTo.from}
+                valueForTo={fromTo.to}
+              />
+              <CustomField
+                inputRef={register()}
+                name="whereToVolunteer"
+                label="Where do you prefer to volunteer"
               />
 
-              <InputWithIcon label="Facebook profile URL">
-                <Facebook className={classes.facebookIcon} />
+              <InputWithIcon
+                name="facebookProfile"
+                inputRef={register()}
+                label="Facebook profile URL"
+              >
+                <FacebookIcon />
               </InputWithIcon>
-              <InputWithIcon label="LinkedIn profile URL">
-                <LinkedIn className={classes.linkedInIcon} />
+              <InputWithIcon
+                name="linkedinProfile"
+                inputRef={register()}
+                label="LinkedIn profile URL"
+              >
+                <LinkedInIcon />
               </InputWithIcon>
-              <InputWithIcon label="Twitter Profile URL">
-                <Twitter className={classes.twitterIcon} />
+              <InputWithIcon
+                name="twitterProfile"
+                inputRef={register()}
+                label="Twitter Profile URL"
+              >
+                <TwitterIcon />
               </InputWithIcon>
 
-              <TextField
-                className={classes.textField}
-                // multiline
-                // rows={2}
+              <CustomField
+                inputRef={register()}
+                name="other"
                 label="Other information"
               />
-              <Paper
-                onSubmit={handleFormSubmit}
-                className={classes.paper}
-                component="form"
+              {/* - Skills (text field by tags) */}
+
+              <Skills
+                onButtonClick={handleAddSkills}
+                onKeyDown={handleKeyPress}
+                onChange={handleSkillChange}
+                value={newSkill}
+              />
+              <Box
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                }}
               >
-                <InputBase
-                  onKeyDown={handleKeyPress}
-                  placeholder="skills"
-                  inputProps={{ 'aria-label': 'skills' }}
-                />
-                <Button>add</Button>
-              </Paper>
+                {listOfSkills.map((skill) => (
+                  <div key={skill} className={'skill'}>
+                    {skill}{' '}
+                    <span onClick={handleDeleteFromList(skill)}>&#x292B;</span>
+                  </div>
+                ))}
+              </Box>
             </div>
           </div>
-
+          <ErrorMessage>
+            {error
+              ? error
+              : errors.country || errors.city || errors.birthDate
+              ? 'Please fill in the required fields'
+              : null}
+          </ErrorMessage>
           <SubmitButton>Finish</SubmitButton>
         </form>
       </div>
@@ -195,3 +268,26 @@ const Volunteer: FC = () => {
 };
 
 export default Volunteer;
+
+// fetch(
+//   `${REACT_APP_URL_REGISTER}${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYTY3NWQ1MWVmYzQxMDAwNDFjZDBiOSIsImlhdCI6MTYwNDc0NDY2MSwiZXhwIjoxNjA0ODMxMDYxfQ.RELBq-IkQipGhtvijjvX2Qy3oiLqQ8NGkzAfvXJ1q50'}`,
+//   {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify(data),
+//   }
+// )
+//   .then((res) => {
+//     return res.json();
+//   })
+//   .then((json) => {
+//     if (json.status === 'finished') {
+//       history.push('/farewell');
+//     }
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+// }

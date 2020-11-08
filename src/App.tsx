@@ -1,11 +1,17 @@
-import { Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+/* pages */
 import EmailValidation from './pages/EmailRegistration/EmailRegistration';
 import Home from './pages/Home/Home';
 import PhoneRegistration from './pages/PhoneRegistration/PhoneRegistration';
 import Volunteer from './pages/volunteer/Volunteer';
+import Farewell from './pages/Farewell/Farewell';
+import EmailCheck from './pages/EmailCheck/EmailCheck';
+
+/* UI */
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles({
   root: {
@@ -36,6 +42,13 @@ function App() {
           </Route>
           <Route path="/registration/volunteer">
             <Volunteer />
+          </Route>
+
+          <Route path="/verification/email/:slug">
+            <EmailCheck />
+          </Route>
+          <Route path="/farewell">
+            <Farewell />
           </Route>
         </Switch>
       </Router>

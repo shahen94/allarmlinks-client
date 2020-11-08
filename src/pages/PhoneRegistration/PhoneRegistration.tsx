@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import PhoneVerificationForm from '../../components/PnoneVerificationForm/PhoneVerificationForm';
+import React from 'react';
+import PhoneVerificationForm from '../../components/PhoneVerificationForm/PhoneVerificationForm';
 
 function PhoneRegistration() {
-  const [auth, setAuth] = useState(true);
-  return auth ? (
+  return (
     <div
       style={{
         margin: 10,
@@ -11,8 +10,6 @@ function PhoneRegistration() {
     >
       <PhoneVerificationForm />
     </div>
-  ) : (
-    <p>your email is not verified</p>
   );
 }
 
