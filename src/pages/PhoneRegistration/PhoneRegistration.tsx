@@ -1,13 +1,10 @@
 import React from 'react';
 import PhoneVerificationForm from '../../components/PhoneVerificationForm/PhoneVerificationForm';
+import styles from './PhoneRegistration.module.scss';
 
 function PhoneRegistration() {
   return (
-    <div
-      style={{
-        margin: 10,
-      }}
-    >
+    <div className={styles.phone__registration}>
       <PhoneVerificationForm />
     </div>
   );

@@ -1,0 +1,13 @@
+.phone__registration {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .phone__registration {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+}

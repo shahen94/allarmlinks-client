@@ -71,7 +71,7 @@ const EmailVerificationForm: FC = () => {
   const onSubmit: () => void = handleSubmit((data: formValues) => {
     setClicked(true);
     dispatch(setEmailData(data));
-    /*  axios
+    axios
       .post(REACT_APP_URL_EMAIL, data)
       .then((res) => {
         if (res.data.status === 'email verified') {
@@ -83,7 +83,7 @@ const EmailVerificationForm: FC = () => {
           dispatch(changeEmailSuccess(true));
         }
       })
-      .catch((error) => console.log(error)); */
+      .catch((error) => console.log(error));
   });
 
   return (

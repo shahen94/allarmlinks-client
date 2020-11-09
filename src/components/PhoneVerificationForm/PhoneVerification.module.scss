@@ -6,6 +6,7 @@
   background: #f4f4f4;
   padding: 2rem 5rem;
   border-radius: 10px;
+  box-sizing: border-box;
 }
 .input {
   padding: 25px 0 25px 60px;
@@ -31,4 +32,10 @@
   top: -10px;
   border-radius: 10px;
   box-shadow: 5px 5px 2px 1px #d6d6d695, -3px -3px 1px #e6e6e695;
+}
+
+.firstHeader {
+  margin-bottom: 30px;
+  font-weight: 400;
+  text-align: center;
 }

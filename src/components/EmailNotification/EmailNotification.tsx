@@ -60,10 +60,10 @@ const EmailNotification = () => {
     setResend(true);
     const REACT_APP_URL_EMAIL = process.env.REACT_APP_URL_EMAIL || '';
 
-    // axios
-    //   .post(REACT_APP_URL_EMAIL, emailData)
-    //   .then((res) => console.log(res))
-    //   .catch((err) => console.log(err));
+    axios
+      .post(REACT_APP_URL_EMAIL, emailData)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
   return (
     <div className={classes.root}>

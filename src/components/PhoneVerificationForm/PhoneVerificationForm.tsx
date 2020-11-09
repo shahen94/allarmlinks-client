@@ -23,18 +23,11 @@ import Form from '../FormElements/Form';
 import Digits from '../FormElements/Digits/Digits';
 
 const useStyles = makeStyles({
-  firstHeader: {
+  secondHeader: {
     marginBottom: 30,
     fontWeight: 400,
-    fontSize: '1.8rem',
-    height: 30,
+    fontSize: '1.5rem',
     textAlign: 'center',
-  },
-
-  secondHeader: {
-    marginBottom: 10,
-    fontWeight: 400,
-    fontSize: '1.8rem',
   },
 });
 
@@ -119,11 +112,12 @@ const PhoneVerificationForm = () => {
       container
       alignItems="center"
       justify="center"
-      spacing={3}
+      spacing={2}
       direction="column"
+      style={{ width: '100%' }}
     >
       <Grid item sm={12} md={12} lg={12}>
-        <Typography className={classes.firstHeader} variant="h5" component="h2">
+        <Typography className={styles.firstHeader} variant="h5" component="h2">
           {sendStatus ? '' : 'Thank you for your Email Verification'}
         </Typography>
       </Grid>
