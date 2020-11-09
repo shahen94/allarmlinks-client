@@ -61,49 +61,52 @@ const PhoneVerificationForm = () => {
         throw new Error('Your mail is not registered');
       }
 
-      if (passCode && phone) {
-        if (passCode.trim().length < 6) {
-          throw new Error('Pass code must have 6 digits');
+      if (!sendStatus) {
+        if (phone.length < 12) {
+          throw new Error('please fill in the phone number');
         }
-        setFinalClick(true);
-
         axios
-          .post(`${REACT_APP_URL_PHONE_WIDTH_CODE}${token}`, {
-            phone: phone,
-            code: passCode,
-          })
+          .post(`${REACT_APP_URL_PHONE}${token}`, { phone: phone })
           .then((res) => {
-            if (!res.data.error) {
-              history.push('/registration/volunteer');
-            } else {
-              setFinalClick(false);
+            console.log(res);
+            if (res.status !== 200 && res.data.error) {
               setError(res.data.error);
+            } else {
+              setSendStatus(true);
             }
           })
-          .catch((err) => {
-            setFinalClick(false);
-            console.log(err);
-            setError('request failed');
+          .catch((error) => {
+            setError('Internal Error');
           });
-      } else if ((passCode && !phone) || (!passCode && phone)) {
-        throw new Error('Please fill out all of the fields');
       } else {
-        if (!sendStatus) {
+        if (passCode && phone) {
+          if (passCode.trim().length < 6) {
+            throw new Error('Pass code must have 6 digits');
+          }
+          if (phone.length < 12) {
+            throw new Error('please fill in the phone number');
+          }
+          setFinalClick(true);
           axios
-            .post(`${REACT_APP_URL_PHONE}${token}`, { phone: phone })
+            .post(`${REACT_APP_URL_PHONE_WIDTH_CODE}${token}`, {
+              phone: phone,
+              code: passCode,
+            })
             .then((res) => {
-              console.log(res);
-              if (res.status !== 200 && res.data.error) {
-                setError(res.data.error);
+              if (!res.data.error) {
+                history.push('/registration/volunteer');
               } else {
-                setSendStatus(true);
+                setFinalClick(false);
+                setError(res.data.error);
               }
             })
-            .catch((error) => {
-              setError('Internal Error');
+            .catch((err) => {
+              setFinalClick(false);
+              console.log(err);
+              setError('request failed');
             });
         } else {
-          throw new Error('The code is not correct');
+          throw new Error('Please fill out all of the fields');
         }
       }
     } catch (err) {
