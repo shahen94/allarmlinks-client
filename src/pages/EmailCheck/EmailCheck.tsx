@@ -33,6 +33,12 @@ export default function GetToken() {
               dispatch(setToken(slug));
               history.push('/registration/phone');
             }, 1000);
+            if (res.data.status === 'phone verified') {
+              setTimeout(() => {
+                dispatch(setToken(slug));
+                history.push('/registration/volunteer');
+              }, 1000);
+            }
           }
         } else {
           throw new Error('Internal Error');

@@ -3,6 +3,7 @@ import React, { FC, useEffect, useState, ChangeEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/index';
+import axios from 'axios';
 
 import './volunteer.scss';
 
@@ -22,7 +23,6 @@ import {
 import SelectInput from '../../components/FormElements/SelectInput/SelectInput';
 import AvailableHours from '../../components/FormElements/AvailableHours/AvailableHours';
 import DatePicker from '../../components/FormElements/DataPicker/DatePicker';
-import axios from 'axios';
 
 const REACT_APP_URL_REGISTER = process.env.REACT_APP_URL_REGISTER;
 
@@ -69,7 +69,7 @@ const Volunteer: FC = () => {
       if (newSkill.trim() !== '') {
         setListOFSkills((state) => [...state, newSkill]);
         setNewSkill('');
-        setValue('skills', [...listOfSkills, newSkill]);
+        setValue('addedTags', [...listOfSkills, newSkill]);
       }
     }
   };
@@ -82,7 +82,7 @@ const Volunteer: FC = () => {
     if (newSkill.trim() !== '') {
       setListOFSkills((state) => [...state, newSkill]);
       setNewSkill('');
-      setValue('skills', [...listOfSkills, newSkill]);
+      setValue('addedTags', [...listOfSkills, newSkill]);
     }
   };
 
@@ -112,11 +112,15 @@ const Volunteer: FC = () => {
   /* SUBMIT */
 
   const onSubmit = (data: any) => {
-    // console.log(data);
-    // console.log(JSON.stringify(data));
+    data.tagIds = [];
+    console.log(data);
+    console.log(JSON.stringify(data));
 
     axios
-      .post(`${REACT_APP_URL_REGISTER}${token}`, data)
+      .post(
+        `${REACT_APP_URL_REGISTER}${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYThkY2VjZTQ4NzdmMDAwNDM5OTgwNyIsImlhdCI6MTYwNDkwMjEyNCwiZXhwIjoxNjA0OTg4NTI0fQ.hSJw-K6Pf8EanXmCfaMxrw8d8X4w4jZDgFuRG6t8u5U'}`,
+        data
+      )
       .then((res) => {
         if (res.data.status === 'finished') {
           history.push('/farewell');
@@ -127,12 +131,12 @@ const Volunteer: FC = () => {
         }
       })
       .catch((error) => {
-        setError(error.message);
+        setError(error.response.data.error);
       });
   };
 
   useEffect(() => {
-    register({ name: 'skills' });
+    register({ name: 'addedTags' });
     register({ name: 'hoursPerWeek' });
   }, [register]);
 

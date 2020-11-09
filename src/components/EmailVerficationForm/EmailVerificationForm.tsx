@@ -60,6 +60,7 @@ const REACT_APP_URL_EMAIL = process.env.REACT_APP_URL_EMAIL || '';
 const EmailVerificationForm: FC = () => {
   const classes = useStyles();
   const [clicked, setClicked] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [registered, setRegistered] = useState(false);
   const dispatch = useDispatch();
 
@@ -76,13 +77,19 @@ const EmailVerificationForm: FC = () => {
         if (res.data.status === 'email verified') {
           setRegistered(true);
           setClicked(false);
-        } else if (res.data.status === 'phoneVerified') {
-          throw new Error('you are already registered');
+        } else if (res.data.status === 'phone verified') {
+          setRegistered(true);
+          setClicked(false);
+        } else if (res.data.status === 'finished') {
+          throw new Error('You are already registered');
         } else {
           dispatch(changeEmailSuccess(true));
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        setError(error.message);
+        setClicked(false);
+      });
   });
 
   return (
@@ -123,7 +130,9 @@ const EmailVerificationForm: FC = () => {
               label="Email Address"
             />
             <ErrorMessage>
-              {errors.email || errors.surname || errors.name
+              {error
+                ? error
+                : errors.email || errors.surname || errors.name
                 ? 'Please fill in the required fields'
                 : null}
             </ErrorMessage>
