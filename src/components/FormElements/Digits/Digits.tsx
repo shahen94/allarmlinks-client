@@ -3,6 +3,7 @@ import useDigitInput, { InputAttributes } from 'react-digit-input';
 import styles from './Digits.module.scss';
 import { setPassCode } from '../../../store/features/passcode';
 import { useDispatch } from 'react-redux';
+import { ColorLens } from '@material-ui/icons';
 
 const DigitInputElement = React.forwardRef<
   HTMLInputElement,

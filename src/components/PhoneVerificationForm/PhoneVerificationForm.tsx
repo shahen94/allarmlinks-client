@@ -31,11 +31,6 @@ const useStyles = makeStyles({
   },
 });
 
-interface data {
-  phone: string;
-  code: string;
-}
-
 const REACT_APP_URL_PHONE = process.env.REACT_APP_URL_PHONE;
 const REACT_APP_URL_PHONE_WIDTH_CODE =
   process.env.REACT_APP_URL_PHONE_WIDTH_CODE;
@@ -45,37 +40,38 @@ const PhoneVerificationForm = () => {
     passCode,
     token,
   }));
+
   const history = useHistory();
   const classes = useStyles();
 
-  const [data, setData] = useState<data>({ phone: '', code: '' });
-  const [sendStatus, setSendStatus] = useState(false);
+  const [phone, setPhone] = useState('');
+  const [sendStatus, setSendStatus] = useState(true);
   const [error, setError] = useState('');
   const [finalClick, setFinalClick] = useState(false);
 
   const handleOnChange = (value: string) => {
     setError('');
-    setData((state) => ({ ...state, phone: `+${value}` }));
+    setPhone(`+${value}`);
   };
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       if (!token) {
-        throw new Error("You're mail is not registered");
+        throw new Error('Your mail is not registered');
       }
-      setData((state) => ({ ...state, code: passCode }));
-      if (data.phone.length < 12) {
-        throw new Error('please fill in your phone number');
-      }
-      if (data.code && data.phone) {
-        if (data.code.length < 6) {
-          throw new Error('pass code must be 6 digits');
+
+      if (passCode && phone) {
+        if (passCode.trim().length < 6) {
+          throw new Error('Pass code must have 6 digits');
         }
         setFinalClick(true);
 
         axios
-          .post(`${REACT_APP_URL_PHONE_WIDTH_CODE}${token}`, data)
+          .post(`${REACT_APP_URL_PHONE_WIDTH_CODE}${token}`, {
+            phone: phone,
+            code: passCode,
+          })
           .then((res) => {
             if (!res.data.error) {
               history.push('/registration/volunteer');
@@ -89,12 +85,12 @@ const PhoneVerificationForm = () => {
             console.log(err);
             setError('request failed');
           });
-      } else if ((data.code && !data.phone) || (!data.code && !data.phone)) {
+      } else if ((passCode && !phone) || (!passCode && phone)) {
         throw new Error('Please fill out all of the fields');
       } else {
         if (!sendStatus) {
           axios
-            .post(`${REACT_APP_URL_PHONE}${token}`, { phone: data.phone })
+            .post(`${REACT_APP_URL_PHONE}${token}`, { phone: phone })
             .then((res) => {
               console.log(res);
               if (res.status !== 200 && res.data.error) {
@@ -102,6 +98,9 @@ const PhoneVerificationForm = () => {
               } else {
                 setSendStatus(true);
               }
+            })
+            .catch((error) => {
+              setError('Internal Error');
             });
         } else {
           throw new Error('The code is not correct');
