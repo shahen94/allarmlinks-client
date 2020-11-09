@@ -232,7 +232,7 @@ const Volunteer: FC = () => {
 
               <Skills
                 onButtonClick={handleAddSkills}
-                onKeyDown={handleKeyPress}
+                onKeyPress={handleKeyPress}
                 onChange={handleSkillChange}
                 value={newSkill}
               />

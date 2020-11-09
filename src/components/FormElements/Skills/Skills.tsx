@@ -1,40 +1,37 @@
 import React, { FC } from 'react';
 import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
 import Button from '@material-ui/core/Button';
-import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles({
   paper: {
     display: 'flex',
-    width: '97.5%',
+    width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
     boxShadow: '2px 2px 2px 1px #D6D6D6, -1px -1px 1px #E6E6E6',
     background: 'white',
-    padding: '4px',
     position: 'relative',
+  },
+  textField: {
+    borderRadius: 5,
+    background: 'white',
+    padding: '0',
     '& .MuiInputBase-root::before': {
       display: 'none',
     },
     '& .MuiInputLabel-root': {
-      position: 'absolute',
-      top: 20,
-      left: '0.2rem',
-      transform: 'translate(0.3rem, 0) scale(1)',
+      transform: 'translate(0.3rem, 1.2rem) scale(1)',
       fontSize: 14,
-      pointerEvents: 'none',
-      transition: 'transform 0.3s easy-out',
+    },
+    '& .MuiInputLabel-shrink': {
+      transform: 'translate(0.2rem, 0) scale(0.75)',
     },
     '& .MuiInputBase-root': {
-      marginTop: '10px',
-      padding: '0 10px 0px ',
-    },
-    '& .Mui-focused ~ .MuiInputLabel-root': {
-      transform: 'translate(0.3rem, -1.3rem) scale(0.75)',
-      color: '#3F5FC8',
+      marginTop: '16px',
+      padding: '0 10px 4px ',
     },
   },
 });
@@ -46,11 +43,7 @@ interface SkillsProps {
         event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
       ) => void)
     | undefined;
-  onKeyDown:
-    | ((
-        event: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>
-      ) => void)
-    | undefined;
+  onKeyPress: ((event: any) => void) | undefined;
 
   onButtonClick:
     | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
@@ -61,20 +54,23 @@ const Skills: FC<SkillsProps> = ({
   value,
   onChange,
   onButtonClick,
-  onKeyDown,
+  onKeyPress,
 }) => {
   const classes = useStyles();
 
   return (
     <>
       <Paper className={classes.paper} component="div">
-        <InputBase
+        <TextField
+          className={classes.textField}
           value={value}
           fullWidth
+          label="skills"
           onChange={onChange}
-          onKeyDown={onKeyDown}
+          InputProps={{
+            onKeyPress: onKeyPress,
+          }}
         />
-        <InputLabel>skills</InputLabel>
         <Button onClick={onButtonClick}>add</Button>
       </Paper>
     </>

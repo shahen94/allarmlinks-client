@@ -67,18 +67,44 @@
     align-items: center;
     gap: 1rem;
   }
+
   .formColumn {
     margin-top: 0;
-    align-items: center;
-    justify-content: center;
-  }
-  .formColumn {
     width: 90%;
     min-width: 300px;
     max-width: 300px;
     display: flex;
     gap: 1rem;
+    align-items: center;
     // flex-direction: column;
+    justify-content: flex-start;
+    box-sizing: border-box;
+  }
+}
+
+@media only screen and (max-width: 1000px) and (min-width: 768px) {
+  .volunteer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #f4f4f4;
+    padding: 1.2rem 6rem;
+  }
+  .formFields {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 6rem;
+  }
+
+  .formColumn {
+    width: 50%;
+    max-width: 300px;
+    min-width: 300px;
+    display: flex;
+    gap: 1.2rem;
+    flex-direction: column;
     justify-content: flex-start;
     box-sizing: border-box;
   }
