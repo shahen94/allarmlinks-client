@@ -45,7 +45,7 @@ const PhoneVerificationForm = () => {
   const classes = useStyles();
 
   const [phone, setPhone] = useState('');
-  const [sendStatus, setSendStatus] = useState(true);
+  const [sendStatus, setSendStatus] = useState(false);
   const [error, setError] = useState('');
   const [finalClick, setFinalClick] = useState(false);
 
