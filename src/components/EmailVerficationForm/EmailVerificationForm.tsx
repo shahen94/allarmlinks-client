@@ -107,7 +107,6 @@ const EmailVerificationForm: FC = () => {
               name="name"
               label="Name"
               fullWidth
-              defaultValue="asdf"
             />
             <TextField
               className={classes.textField}
@@ -115,7 +114,6 @@ const EmailVerificationForm: FC = () => {
               fullWidth
               name="surname"
               label="Surname"
-              defaultValue="asdf"
             />
             <TextField
               className={classes.textField}
@@ -123,7 +121,6 @@ const EmailVerificationForm: FC = () => {
               fullWidth
               name="email"
               label="Email Address"
-              defaultValue="sako558@gmail.com"
             />
             <ErrorMessage>
               {errors.email || errors.surname || errors.name
