@@ -8,7 +8,7 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: '1.2rem',
+    fontSize: '1rem',
   },
 });
 
@@ -19,11 +19,9 @@ interface IErrorMessageProps {
 const ErrorMessage: FC<IErrorMessageProps> = ({ children }) => {
   const classes = useStyles();
   return (
-    <div>
-      <Typography className={classes.root} color="secondary">
-        {children}
-      </Typography>
-    </div>
+    <Typography className={classes.root} color="secondary">
+      {children}
+    </Typography>
   );
 };
 
