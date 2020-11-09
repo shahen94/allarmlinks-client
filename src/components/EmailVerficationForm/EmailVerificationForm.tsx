@@ -66,7 +66,6 @@ const EmailVerificationForm: FC = () => {
   const { register, handleSubmit, errors } = useForm({
     mode: 'onSubmit',
   });
-  dispatch(changeEmailSuccess(true));
 
   const onSubmit: () => void = handleSubmit((data: formValues) => {
     setClicked(true);
