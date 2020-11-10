@@ -44,11 +44,7 @@ const Volunteer: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedLangs, setSelectedLangs] = React.useState<string[]>([]);
   const [fromTo, setFromTo] = useState<FromTo>({ from: '', to: '' });
-  const [listOfSkills, setListOFSkills] = useState([
-    'English',
-    'Turkish',
-    'Programming',
-  ]);
+  const [listOfSkills, setListOFSkills] = useState<string[]>([]);
 
   /* FORM */
 
@@ -66,8 +62,10 @@ const Volunteer: FC = () => {
   ) => {
     if (e.key === 'Enter') {
       e.preventDefault();
+      const set: Set<string> = new Set(listOfSkills);
+      set.add(newSkill.toLowerCase());
       if (newSkill.trim() !== '') {
-        setListOFSkills((state) => [...state, newSkill]);
+        setListOFSkills((state) => Array.from(set));
         setNewSkill('');
         setValue('addedTags', [...listOfSkills, newSkill]);
       }
@@ -229,7 +227,6 @@ const Volunteer: FC = () => {
                 name="other"
                 label="Other information"
               />
-              {/* - Skills (text field by tags) */}
 
               <Skills
                 onButtonClick={handleAddSkills}
@@ -246,8 +243,12 @@ const Volunteer: FC = () => {
                 }}
               >
                 {listOfSkills.map((skill) => (
-                  <div key={skill} className={'skill'}>
-                    {skill}{' '}
+                  <div
+                    style={{ textTransform: 'capitalize' }}
+                    key={skill}
+                    className={'skill'}
+                  >
+                    {skill}
                     <span onClick={handleDeleteFromList(skill)}>&#x292B;</span>
                   </div>
                 ))}
