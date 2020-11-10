@@ -121,14 +121,13 @@ const PhoneVerificationForm = () => {
       justify="center"
       spacing={2}
       direction="column"
-      style={{ width: '100%' }}
     >
-      <Grid item sm={12} md={12} lg={12}>
+      <Grid item sm={8}>
         <Typography className={styles.firstHeader} variant="h5" component="h2">
           {sendStatus ? '' : 'Thank you for your Email Verification'}
         </Typography>
       </Grid>
-      <Grid item sm={12} md={12} lg={12}>
+      <Grid item sm={8}>
         <div className={styles.container}>
           <Typography
             className={classes.secondHeader}
@@ -152,7 +151,8 @@ const PhoneVerificationForm = () => {
               masks={{ am: '.. ......', at: '(....) ...-....' }}
               inputClass={styles.input}
               inputStyle={{
-                fontSize: 25,
+                fontSize: 20,
+                width: '100%',
               }}
               buttonClass={styles.button}
               buttonStyle={{
