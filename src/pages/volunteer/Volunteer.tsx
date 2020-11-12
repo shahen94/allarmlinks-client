@@ -110,9 +110,8 @@ const Volunteer: FC = () => {
   /* SUBMIT */
 
   const onSubmit = (data: any) => {
-    data.tagIds = [];
-    console.log(data);
-    console.log(JSON.stringify(data));
+    const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    data.birthDate = data.birthDate.toLocaleString('En-us', dateOptions);
 
     axios
       .post(`${REACT_APP_URL_REGISTER}${token}`, data)
@@ -270,26 +269,3 @@ const Volunteer: FC = () => {
 };
 
 export default Volunteer;
-
-// fetch(
-//   `${REACT_APP_URL_REGISTER}${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYTY3NWQ1MWVmYzQxMDAwNDFjZDBiOSIsImlhdCI6MTYwNDc0NDY2MSwiZXhwIjoxNjA0ODMxMDYxfQ.RELBq-IkQipGhtvijjvX2Qy3oiLqQ8NGkzAfvXJ1q50'}`,
-//   {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify(data),
-//   }
-// )
-//   .then((res) => {
-//     return res.json();
-//   })
-//   .then((json) => {
-//     if (json.status === 'finished') {
-//       history.push('/farewell');
-//     }
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
-// }

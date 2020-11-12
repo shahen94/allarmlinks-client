@@ -18,6 +18,7 @@ const Form: FC<Props> = ({ children, onSubmit, className }) => {
         display: 'flex',
         flexDirection: 'column',
         gap: 10,
+        position: 'relative',
       }}
     >
       {children}

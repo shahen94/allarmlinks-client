@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { setEmailData } from '../../store/features/emailData';
 import { EMAIL_REGEX } from '../../constants/regex.constants';
+import { formValues } from '../../types/emailVerification.types';
 
 import styles from './EmailVerificationForm.module.scss';
 
@@ -12,19 +13,14 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/styles';
 import { CircularProgress, Grid } from '@material-ui/core';
-
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 /* Components */
 import Form from '../FormElements/Form';
 import SubmitButton from '../FormElements/SubmitButton';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import { validateField } from '../../utils/validate.util';
 import { changeEmailSuccess } from '../../store/features/emailFormSuccess';
-
-type formValues = {
-  name: string;
-  surname: string;
-  email: string;
-};
 
 const useStyles = makeStyles({
   textField: {
@@ -87,7 +83,7 @@ const EmailVerificationForm: FC = () => {
         }
       })
       .catch((error) => {
-        setError(error.message);
+        setError(error.response.data.error);
         setClicked(false);
       });
   });
@@ -106,7 +102,7 @@ const EmailVerificationForm: FC = () => {
             Registration Form
           </Typography>
         </Grid>
-        <Grid item sm={12}>
+        <Grid item sm={10}>
           <Form onSubmit={onSubmit}>
             <TextField
               className={classes.textField}
@@ -124,7 +120,7 @@ const EmailVerificationForm: FC = () => {
             />
             <TextField
               className={classes.textField}
-              inputRef={register(validateField('email', EMAIL_REGEX))}
+              inputRef={register(validateField('email'))}
               fullWidth
               name="email"
               label="Email Address"
@@ -132,7 +128,7 @@ const EmailVerificationForm: FC = () => {
             <ErrorMessage>
               {error
                 ? error
-                : errors.email || errors.surname || errors.name
+                : errors.surname || errors.name || errors.email
                 ? 'Please fill in the required fields'
                 : null}
             </ErrorMessage>
@@ -140,12 +136,16 @@ const EmailVerificationForm: FC = () => {
           </Form>
         </Grid>
       </Grid>
-      <div className={styles.popup} hidden={!registered ? true : false}>
-        Your email is already verified. But phone is not. To continue
-        registration please check out your mail box and follow the link that we
-        have sent.
-      </div>
-
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        open={registered}
+        autoHideDuration={6000}
+      >
+        <MuiAlert severity="warning">
+          Your email is already verified. To continue registration please check
+          out your mail box and follow the link that we have sent.
+        </MuiAlert>
+      </Snackbar>
       {clicked ? (
         <CircularProgress
           style={{

@@ -50,6 +50,9 @@ function App() {
           <Route path="/farewell">
             <Farewell />
           </Route>
+          {/*  <Route path="*">
+            <div>404 Error</div>
+          </Route> */}
         </Switch>
       </Router>
     </div>

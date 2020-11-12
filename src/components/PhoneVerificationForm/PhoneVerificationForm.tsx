@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PhoneInput from 'react-phone-input-2';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
@@ -16,11 +16,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
-
+import Button from '@material-ui/core/Button';
 /* components */
 import SubmitButton from '../FormElements/SubmitButton';
 import Form from '../FormElements/Form';
 import Digits from '../FormElements/Digits/Digits';
+import ArrowBack from '@material-ui/icons/ArrowBack';
 
 const useStyles = makeStyles({
   secondHeader: {
@@ -45,7 +46,7 @@ const PhoneVerificationForm = () => {
   const classes = useStyles();
 
   const [phone, setPhone] = useState('');
-  const [sendStatus, setSendStatus] = useState(false);
+  const [sendStatus, setSendStatus] = useState(true);
   const [error, setError] = useState('');
   const [finalClick, setFinalClick] = useState(false);
 
@@ -57,9 +58,10 @@ const PhoneVerificationForm = () => {
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      if (!token) {
+      /* ANCHOR remove this check */
+      /* if (!token) {
         throw new Error('Your mail is not registered');
-      }
+      } */
 
       if (!sendStatus) {
         if (phone.length < 12) {
@@ -75,8 +77,9 @@ const PhoneVerificationForm = () => {
               setSendStatus(true);
             }
           })
+          /* ANCHOR bad thing */
           .catch((error) => {
-            setError('Internal Error');
+            setError(error.response.data.error);
           });
       } else {
         if (passCode && phone) {
@@ -102,8 +105,7 @@ const PhoneVerificationForm = () => {
             })
             .catch((err) => {
               setFinalClick(false);
-              console.log(err);
-              setError('request failed');
+              setError(err.response.data.error);
             });
         } else {
           throw new Error('Please fill out all of the fields');
@@ -113,6 +115,12 @@ const PhoneVerificationForm = () => {
       setError(err.message);
     }
   };
+  /* 
+  useEffect(() => {
+    if (!token) {
+      history.push('/');
+    }
+  }, [history, token]); */
 
   return (
     <Grid
@@ -163,6 +171,17 @@ const PhoneVerificationForm = () => {
 
             <div className={styles.digits}>{!sendStatus ? '' : <Digits />}</div>
             <ErrorMessage>{error ? error : null}</ErrorMessage>
+            <Button
+              onClick={() => setSendStatus(false)}
+              style={{
+                position: 'absolute',
+                bottom: 5,
+                left: 0,
+                display: sendStatus ? 'block' : 'none',
+              }}
+            >
+              <ArrowBack color="primary" />
+            </Button>
             <SubmitButton>Send Code</SubmitButton>
           </Form>
           {finalClick ? (
@@ -171,6 +190,7 @@ const PhoneVerificationForm = () => {
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
+                padding: 0,
               }}
             />
           ) : null}

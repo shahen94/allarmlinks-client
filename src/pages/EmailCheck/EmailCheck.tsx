@@ -27,25 +27,28 @@ export default function GetToken() {
     axios
       .get(`${REACT_APP_URL_EMAIL}${slug}`)
       .then((res) => {
+        console.log(res);
         if (res.status === 200) {
           if (res.data.status === 'email verified') {
             setTimeout(() => {
               dispatch(setToken(slug));
               history.push('/registration/phone');
             }, 1000);
-            if (res.data.status === 'phone verified') {
-              setTimeout(() => {
-                dispatch(setToken(slug));
-                history.push('/registration/volunteer');
-              }, 1000);
-            }
+          }
+          if (res.data.status === 'phone verified') {
+            setTimeout(() => {
+              dispatch(setToken(slug));
+              history.push('/registration/volunteer');
+            }, 1000);
           }
         } else {
-          throw new Error('Internal Error');
+          throw new Error('Oops! Something went wrong.');
         }
       })
       .catch((err) => {
-        setError(err.message);
+        if (err) {
+          setError('Oops! Something went wrong.');
+        }
       });
   });
   return (
@@ -67,18 +70,3 @@ export default function GetToken() {
     </div>
   );
 }
-
-// fetch(`${REACT_APP_URL_EMAIL}${slug}`)
-//   .then((res) => {
-//     return res.json();
-//     /* ANCHOR error is not handled */
-//   })
-//   .then((json) => {
-//     console.log(json);
-//     if (json.status === 'email verified') {
-//       setTimeout(() => {
-//         dispatch(setToken(slug));
-//         history.push('/registration/phone');
-//       }, 1000);
-//     }
-//   });

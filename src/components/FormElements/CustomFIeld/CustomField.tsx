@@ -16,6 +16,11 @@ const useStyles = makeStyles({
     boxShadow: '2px 2px 2px 1px #D6D6D6, -1px -1px 1px #E6E6E6',
     background: 'white',
     padding: '0',
+
+    '& .MuiFormControl-fullWidth': {
+      width: '100%',
+    },
+
     '& .MuiInputBase-root::before': {
       display: 'none',
     },
