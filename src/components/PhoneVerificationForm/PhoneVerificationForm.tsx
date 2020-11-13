@@ -58,11 +58,6 @@ const PhoneVerificationForm = () => {
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      /* ANCHOR remove this check */
-      /* if (!token) {
-        throw new Error('Your mail is not registered');
-      } */
-
       if (!sendStatus) {
         if (phone.length < 12) {
           throw new Error('please fill in the phone number');
@@ -115,12 +110,12 @@ const PhoneVerificationForm = () => {
       setError(err.message);
     }
   };
-  /* 
+
   useEffect(() => {
     if (!token) {
       history.push('/');
     }
-  }, [history, token]); */
+  }, [history, token]);
 
   return (
     <Grid

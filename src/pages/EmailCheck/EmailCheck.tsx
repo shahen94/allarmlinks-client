@@ -12,10 +12,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 /* constants */
 import { REACT_APP_URL_EMAIL } from '../../constants/env.constants';
-
-interface ParamTypes {
-  slug: string;
-}
+import { ParamTypes } from '../../types/emailVerification.types';
 
 export default function GetToken() {
   const { slug }: ParamTypes = useParams();
@@ -27,25 +24,18 @@ export default function GetToken() {
     axios
       .get(`${REACT_APP_URL_EMAIL}${slug}`)
       .then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          if (res.data.status === 'email verified') {
-            setTimeout(() => {
-              dispatch(setToken(slug));
-              history.push('/registration/phone');
-            }, 1000);
-          }
-          if (res.data.status === 'phone verified') {
-            setTimeout(() => {
-              dispatch(setToken(slug));
-              history.push('/registration/volunteer');
-            }, 1000);
-          }
-          if (res.data.status === 'finished') {
-            throw new Error('You are already registered');
-          }
+        if (res.data.status === 'email verified') {
+          setTimeout(() => {
+            dispatch(setToken(slug));
+            history.push('/registration/phone');
+          }, 1000);
+        } else if (res.data.status === 'phone verified') {
+          setTimeout(() => {
+            dispatch(setToken(slug));
+            history.push('/registration/volunteer');
+          }, 1000);
         } else {
-          throw new Error('Oops! Something went wrong.');
+          setError('You are already registered');
         }
       })
       .catch((err) => {

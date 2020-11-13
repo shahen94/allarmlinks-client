@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { setEmailData } from '../../store/features/emailData';
-import { EMAIL_REGEX } from '../../constants/regex.constants';
 import { formValues } from '../../types/emailVerification.types';
 
 import styles from './EmailVerificationForm.module.scss';
@@ -14,7 +13,8 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/styles';
 import { CircularProgress, Grid } from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import MuiAlert from '@material-ui/lab/Alert';
+
 /* Components */
 import Form from '../FormElements/Form';
 import SubmitButton from '../FormElements/SubmitButton';
@@ -67,31 +67,28 @@ const EmailVerificationForm: FC = () => {
   const onSubmit: () => void = handleSubmit((data: formValues) => {
     setClicked(true);
     dispatch(setEmailData(data));
-    try {
-      axios
-        .post(REACT_APP_URL_EMAIL, data)
-        .then((res) => {
-          if (res.data.status === 'email verified') {
-            setRegistered(true);
-            setClicked(false);
-          } else if (res.data.status === 'phone verified') {
-            setRegistered(true);
-            setClicked(false);
-          } else if (res.data.status === 'finished') {
-            setError('You are already registered');
-            setClicked(false);
-          } else {
-            dispatch(changeEmailSuccess(true));
-          }
-        })
-        .catch((error) => {
-          setError(error.response.data.error);
+
+    axios
+      .post(REACT_APP_URL_EMAIL, data)
+      .then((res) => {
+        if (res.data.status === 'email verified') {
+          setRegistered(true);
           setClicked(false);
-        });
-    } catch (err) {
-      setError(err.message);
-      setClicked(false);
-    }
+        } else if (res.data.status === 'phone verified') {
+          setRegistered(true);
+          setClicked(false);
+        } else if (res.data.status === 'finished') {
+          setError('You are already registered');
+          setClicked(false);
+        } else {
+          dispatch(changeEmailSuccess(true));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setError(error.response.data.error);
+        setClicked(false);
+      });
   });
 
   return (

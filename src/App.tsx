@@ -43,16 +43,12 @@ function App() {
           <Route path="/registration/volunteer">
             <Volunteer />
           </Route>
-
           <Route path="/verification/email/:slug">
             <EmailCheck />
           </Route>
           <Route path="/farewell">
             <Farewell />
           </Route>
-          {/*  <Route path="*">
-            <div>404 Error</div>
-          </Route> */}
         </Switch>
       </Router>
     </div>

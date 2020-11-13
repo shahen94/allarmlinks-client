@@ -3,3 +3,7 @@ export type formValues = {
   surname: string;
   email: string;
 };
+
+export interface ParamTypes {
+  slug: string;
+}
