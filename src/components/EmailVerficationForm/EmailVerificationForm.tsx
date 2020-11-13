@@ -91,6 +91,11 @@ const EmailVerificationForm: FC = () => {
       });
   });
 
+  const setRef = (str: string) => () => {
+    register(validateField(str));
+    setError(null);
+  };
+
   return (
     <div className={styles.email}>
       <Grid
@@ -109,21 +114,21 @@ const EmailVerificationForm: FC = () => {
           <Form onSubmit={onSubmit}>
             <TextField
               className={classes.textField}
-              inputRef={register(validateField('name'))}
+              inputRef={setRef('name')}
               name="name"
               label="Name"
               fullWidth
             />
             <TextField
               className={classes.textField}
-              inputRef={register(validateField('Surname'))}
+              inputRef={setRef('Surname')}
               fullWidth
               name="surname"
               label="Surname"
             />
             <TextField
               className={classes.textField}
-              inputRef={register(validateField('email'))}
+              inputRef={setRef('email')}
               fullWidth
               name="email"
               label="Email Address"
