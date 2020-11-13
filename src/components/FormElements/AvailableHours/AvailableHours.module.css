@@ -1,0 +1,29 @@
+.wrapper {
+  width: 100%;
+}
+
+.main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 100%;
+  padding: 0 10px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -ms-flex-line-pack: start;
+      align-content: flex-start;
+  border-radius: 5;
+  background: white;
+  -webkit-box-shadow: 2px 2px 2px 1px #d6d6d6, -1px -1px 1px #e6e6e6;
+          box-shadow: 2px 2px 2px 1px #d6d6d6, -1px -1px 1px #e6e6e6;
+}
+
+.main__label {
+  padding: 0 0 0 10px;
+  margin: 0 0 10px 0;
+  color: #757575;
+}
+/*# sourceMappingURL=AvailableHours.module.css.map */

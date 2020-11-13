@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,oBAAoB,CAAC;EACnB,MAAM,EAAE,IAAI;EACZ,OAAO,EAAE,IAAI;EACb,WAAW,EAAE,MAAM;CACpB",
+    "sources": [
+        "PhoneRegistration.module.scss"
+    ],
+    "names": [],
+    "file": "PhoneRegistration.module.css"
+}
