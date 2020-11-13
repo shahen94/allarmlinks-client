@@ -114,21 +114,21 @@ const EmailVerificationForm: FC = () => {
           <Form onSubmit={onSubmit}>
             <TextField
               className={classes.textField}
-              inputRef={setRef('name')}
+              inputRef={register(validateField('name'))}
               name="name"
               label="Name"
               fullWidth
             />
             <TextField
               className={classes.textField}
-              inputRef={setRef('Surname')}
+              inputRef={register(validateField('Surname'))}
               fullWidth
               name="surname"
               label="Surname"
             />
             <TextField
               className={classes.textField}
-              inputRef={setRef('email')}
+              inputRef={register(validateField('email'))}
               fullWidth
               name="email"
               label="Email Address"
