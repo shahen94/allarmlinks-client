@@ -78,7 +78,8 @@ const EmailVerificationForm: FC = () => {
             setRegistered(true);
             setClicked(false);
           } else if (res.data.status === 'finished') {
-            throw new Error('You are already registered');
+            setError('You are already registered');
+            setClicked(false);
           } else {
             dispatch(changeEmailSuccess(true));
           }
