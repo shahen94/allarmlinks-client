@@ -67,25 +67,30 @@ const EmailVerificationForm: FC = () => {
   const onSubmit: () => void = handleSubmit((data: formValues) => {
     setClicked(true);
     dispatch(setEmailData(data));
-    axios
-      .post(REACT_APP_URL_EMAIL, data)
-      .then((res) => {
-        if (res.data.status === 'email verified') {
-          setRegistered(true);
+    try {
+      axios
+        .post(REACT_APP_URL_EMAIL, data)
+        .then((res) => {
+          if (res.data.status === 'email verified') {
+            setRegistered(true);
+            setClicked(false);
+          } else if (res.data.status === 'phone verified') {
+            setRegistered(true);
+            setClicked(false);
+          } else if (res.data.status === 'finished') {
+            throw new Error('You are already registered');
+          } else {
+            dispatch(changeEmailSuccess(true));
+          }
+        })
+        .catch((error) => {
+          setError(error.response.data.error);
           setClicked(false);
-        } else if (res.data.status === 'phone verified') {
-          setRegistered(true);
-          setClicked(false);
-        } else if (res.data.status === 'finished') {
-          throw new Error('You are already registered');
-        } else {
-          dispatch(changeEmailSuccess(true));
-        }
-      })
-      .catch((error) => {
-        setError(error.response.data.error);
-        setClicked(false);
-      });
+        });
+    } catch (err) {
+      setError(err.message);
+      setClicked(false);
+    }
   });
 
   return (

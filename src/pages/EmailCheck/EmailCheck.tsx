@@ -41,6 +41,9 @@ export default function GetToken() {
               history.push('/registration/volunteer');
             }, 1000);
           }
+          if (res.data.status === 'finished') {
+            throw new Error('You are already registered');
+          }
         } else {
           throw new Error('Oops! Something went wrong.');
         }
